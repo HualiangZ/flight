@@ -5,7 +5,7 @@ using UnityEngine;
 public class PointerScript : MonoBehaviour
 {
 
-    public Flight player;
+    public Rotation player;
     public float y;
     public float x;
     // Start is called before the first frame update

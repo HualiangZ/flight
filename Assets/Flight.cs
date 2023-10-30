@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Flight : MonoBehaviour
+public class Rotation : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] protected float engineSpeedInterval = 5f;
-    [SerializeField] protected Rigidbody m_Rigidbody;
+    [SerializeField] private float engineSpeedInterval = 0.5f;
+    [SerializeField] private Rigidbody m_Rigidbody;
 
     RaycastHit hit;
 
     //public float speed = 20f;
-    protected float lift = 0f;
+    private float lift = 0f;
     public float zVelocity;
     public float xVelocity;
     public float engineSpeed;
     public float maxEngineSpeed = 500;
-    public float liftPower = 2f; //made up number
+    public float liftPower = 0.5f; //made up number
     public float yawSpeed = 0.1f;
     public float pitchSpeed = 0.1f;
 
     public float yaw;
     public float pitch;
     public float roll;
-    protected float limit = 1f;
-    protected float plainFlap = 0;
-
+    private float limit = 1f;
+    private float plainFlap = 0;
+    
     // Update is called once per frame
 
-    private void Update()
+    void Update()
     {
         zVelocity = m_Rigidbody.velocity.z;
         xVelocity = m_Rigidbody.velocity.x;
@@ -40,15 +40,10 @@ public class Flight : MonoBehaviour
 
     private void FixedUpdate()
     {
-        flight();
-    }
-
-    protected void flight()
-    {
-        if (engineSpeed < 0f)
+        if(engineSpeed < 0f) 
             engineSpeed = 0f;
 
-        if (yaw > limit)
+        if(yaw > limit)
             yaw = limit;
 
         if (yaw < -limit)
@@ -69,13 +64,13 @@ public class Flight : MonoBehaviour
         m_Rigidbody.AddForce(transform.up * lift);
     }
 
-    protected float response()
+    private float response()
     {
         return m_Rigidbody.mass * 2 / 10f;
     }
 
     //Lift force
-    protected void LiftUpdate()
+    private void LiftUpdate()
     {
         float angleOfAttack = Vector3.Dot(m_Rigidbody.velocity.normalized, transform.forward) + plainFlap;
         lift = (Mathf.Pow(zVelocity+xVelocity, 2) / 2) * angleOfAttack * liftPower;
@@ -85,7 +80,7 @@ public class Flight : MonoBehaviour
     //deploy plain flaps if plane is lower then 5(unity units) form the ground
     //plainFlap = 1 will increase lift without increase angle of attack
     //plainflap = -1 will decrease lift without decrease angle of attack
-    protected void flaps()
+    private void flaps()
     {
         Debug.Log(Physics.Raycast(transform.position, Vector3.down, out hit));
 
@@ -102,7 +97,7 @@ public class Flight : MonoBehaviour
             plainFlap = -1;
     }
 
-    protected void planeInput()
+    private void planeInput()
     { 
         yaw += yawSpeed * Input.GetAxis("Mouse X");
         pitch += pitchSpeed * Input.GetAxis("Mouse Y");
