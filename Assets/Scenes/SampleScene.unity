@@ -310,7 +310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &676336240
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -680,13 +680,12 @@ MonoBehaviour:
   zVelocity: 0
   xVelocity: 0
   engineSpeed: 0
-  maxEngineSpeed: 500
   liftPower: 2
   yawSpeed: 0.1
   pitchSpeed: 0.1
+  lift: 0
   yaw: 0
   pitch: 0
-  roll: 0
 --- !u!4 &1060680738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6d974e26910e9354184272f39acc7a36, type: 3}
@@ -726,11 +725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d974e26910e9354184272f39acc7a36, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d974e26910e9354184272f39acc7a36, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d974e26910e9354184272f39acc7a36, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

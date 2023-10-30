@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class Rotation : MonoBehaviour
+public class Flight : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float engineSpeedInterval = 0.5f;
@@ -11,93 +14,156 @@ public class Rotation : MonoBehaviour
 
     RaycastHit hit;
 
-    //public float speed = 20f;
-    private float lift = 0f;
+    
     public float zVelocity;
     public float xVelocity;
     public float engineSpeed;
-    public float maxEngineSpeed = 500;
-    public float liftPower = 0.5f; //made up number
+    public float liftPower = 1.5f; //made up number
     public float yawSpeed = 0.1f;
     public float pitchSpeed = 0.1f;
 
+    public float lift;
     public float yaw;
     public float pitch;
-    public float roll;
-    private float limit = 1f;
-    private float plainFlap = 0;
-    
+    private float roll;
+    private float initLift;
+    private float angleX;
+    private float gForceCountDown = 10f;
+    private float sleepTimer = 15f;
+    private bool isSleeping = false;
+    private float tempEngineSpeed;
+
     // Update is called once per frame
 
     void Update()
     {
+        
         zVelocity = m_Rigidbody.velocity.z;
         xVelocity = m_Rigidbody.velocity.x;
-        flaps();
-        
+        InitLift();
+        SetAngleX();
         LiftUpdate();
+        SetSleep();
+        GForce();
+        if (isSleeping == false)
+        {
+            PlaneInput();
+        }
+        
+        Debug.Log(System.Math.Abs(zVelocity) + System.Math.Abs(xVelocity));
     }
 
     private void FixedUpdate()
     {
+        
         if(engineSpeed < 0f) 
             engineSpeed = 0f;
 
-        if(yaw > limit)
-            yaw = limit;
+        if(yaw > 1f)
+            yaw = 1f;
 
-        if (yaw < -limit)
-            yaw = -limit;
+        if (yaw < -1f)
+            yaw = -1f;
 
-        if (pitch > limit)
-            pitch = limit;
+        if (pitch > 1f)
+            pitch = 1f;
 
-        if (pitch < -limit)
-            pitch = -limit;
+        if (pitch < -1f)
+            pitch = -1f;
 
-        planeInput();
-        m_Rigidbody.AddForce(transform.forward * maxEngineSpeed * engineSpeed);
-        m_Rigidbody.AddTorque(transform.up * yaw * response());
-        m_Rigidbody.AddTorque(-transform.right * pitch * response());
-        m_Rigidbody.AddTorque(-transform.forward * roll * response());
+        
+        //use tempEngineSpeed if pitch angle is greater than 60
+        //so user cant keep holding space
+        if (IsStall())
+        {
+            if(tempEngineSpeed > 0f)
+                tempEngineSpeed -= 2f;
+            m_Rigidbody.AddForce(transform.forward * tempEngineSpeed * engineSpeed);
+
+        }
+        else
+        {
+            tempEngineSpeed = engineSpeed;
+            m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
+        }
+
+        //m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
+        m_Rigidbody.AddTorque(transform.up * yaw * 400f);
+        m_Rigidbody.AddTorque(-transform.right * pitch * 400f);
+        m_Rigidbody.AddTorque(-transform.forward * roll * 400f);
 
         m_Rigidbody.AddForce(transform.up * lift);
     }
 
-    private float response()
+    private void SetAngleX()
     {
-        return m_Rigidbody.mass * 2 / 10f;
+        angleX = 360 - transform.localEulerAngles.x;
+    }
+
+    private Boolean IsStall()
+    {
+        if (angleX < 60f || angleX >= 200f)
+        {
+            return false;
+        }
+        return true;
     }
 
     //Lift force
     private void LiftUpdate()
     {
-        float angleOfAttack = Vector3.Dot(m_Rigidbody.velocity.normalized, transform.forward) + plainFlap;
-        lift = (Mathf.Pow(zVelocity+xVelocity, 2) / 2) * angleOfAttack * liftPower;
+        lift = (Mathf.Pow(System.Math.Abs(zVelocity) + System.Math.Abs(xVelocity), 2f) / 2f)
+            * initLift * liftPower;
         
     }
 
     //deploy plain flaps if plane is lower then 5(unity units) form the ground
-    //plainFlap = 1 will increase lift without increase angle of attack
-    //plainflap = -1 will decrease lift without decrease angle of attack
-    private void flaps()
+    //initLift = 2 will increase lift to help plane get of the ground
+    private void InitLift()
     {
-        Debug.Log(Physics.Raycast(transform.position, Vector3.down, out hit));
-
 
         if (Physics.Raycast(transform.position, Vector3.down, out hit))
         {
             //Debug.Log(hit.distance<5);
-            plainFlap = 0;
-            if (hit.distance < 5)
-                plainFlap = 1;
+            initLift = 0f;
+            if (hit.distance < 5f)
+                initLift = 2f;
         }
 
-        if ((Input.GetKey(KeyCode.G)))
-            plainFlap = -1;
     }
 
-    private void planeInput()
+    private Boolean GForce()
+    {
+        if(engineSpeed > 600f && yaw > 0.8f)
+        {
+            //Debug.Log("1");
+            gForceCountDown -= Time.deltaTime;
+            if(gForceCountDown < 0f) 
+            {
+                yaw = 0f;
+                pitch = 0f;
+                isSleeping = true;
+                return true;
+            }
+        }
+        gForceCountDown = 10f;
+        return false;
+    }
+
+    private void SetSleep()
+    {
+        if (isSleeping)
+        {
+            sleepTimer -= Time.deltaTime; 
+            if (sleepTimer < 0f)
+            {
+                isSleeping = false;
+                sleepTimer = 15f;
+            }
+        }
+    }
+
+    private void PlaneInput()
     { 
         yaw += yawSpeed * Input.GetAxis("Mouse X");
         pitch += pitchSpeed * Input.GetAxis("Mouse Y");
@@ -106,13 +172,31 @@ public class Rotation : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            if (engineSpeed < maxEngineSpeed)
+            if (engineSpeed < 500f)
+            {
                 engineSpeed += engineSpeedInterval;
+            }
+
+                
+        }
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (engineSpeed > 0f)
+            {
+                engineSpeed -= engineSpeedInterval;
+            }
+             
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (engineSpeed > 0f)
+            if(engineSpeed < 700f)
+            {
+                engineSpeed += engineSpeedInterval;
+            }
+            else if(engineSpeed > 500f)
+            {
                 engineSpeed -= engineSpeedInterval;
+            }
         }
 
        
