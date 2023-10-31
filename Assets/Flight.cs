@@ -50,7 +50,7 @@ public class Flight : MonoBehaviour
             PlaneInput();
         }
         
-        Debug.Log(System.Math.Abs(zVelocity) + System.Math.Abs(xVelocity));
+        //Debug.Log(gForceCountDown);
     }
 
     private void FixedUpdate()
@@ -134,9 +134,10 @@ public class Flight : MonoBehaviour
 
     private Boolean GForce()
     {
-        if(engineSpeed > 600f && yaw > 0.8f)
+        if((engineSpeed > 600f && yaw > 0.8f) || (engineSpeed > 600f &&yaw < -0.8f) || 
+            engineSpeed > 600f && pitch > 0.8f)
         {
-            //Debug.Log("1");
+            Debug.Log(gForceCountDown);
             gForceCountDown -= Time.deltaTime;
             if(gForceCountDown < 0f) 
             {
@@ -146,7 +147,12 @@ public class Flight : MonoBehaviour
                 return true;
             }
         }
-        gForceCountDown = 10f;
+        else
+        {
+            gForceCountDown = 10f;
+            return false;       
+        }
+        
         return false;
     }
 
