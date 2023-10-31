@@ -31,7 +31,7 @@ public class Flight : MonoBehaviour
     private float gForceCountDown = 10f;
     private float sleepTimer = 15f;
     private bool isSleeping = false;
-    private float tempEngineSpeed;
+    public float tempEngineSpeed;
 
     // Update is called once per frame
 
@@ -49,7 +49,9 @@ public class Flight : MonoBehaviour
         {
             PlaneInput();
         }
-        
+    
+ 
+
         //Debug.Log(gForceCountDown);
     }
 
@@ -88,9 +90,9 @@ public class Flight : MonoBehaviour
         }
 
         //m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
-        m_Rigidbody.AddTorque(transform.up * yaw * 400f);
-        m_Rigidbody.AddTorque(-transform.right * pitch * 400f);
-        m_Rigidbody.AddTorque(-transform.forward * roll * 400f);
+        m_Rigidbody.AddTorque(transform.up * yaw * 500f);
+        m_Rigidbody.AddTorque(-transform.right * pitch * 500f);
+        m_Rigidbody.AddTorque(-transform.forward * roll * 500f);
 
         m_Rigidbody.AddForce(transform.up * lift);
     }
@@ -199,12 +201,16 @@ public class Flight : MonoBehaviour
             {
                 engineSpeed += engineSpeedInterval;
             }
-            else if(engineSpeed > 500f)
+
+        }
+        else
+        {
+            if (engineSpeed > 500f)
             {
                 engineSpeed -= engineSpeedInterval;
             }
         }
+ 
 
-       
     }
 }
