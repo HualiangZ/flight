@@ -28,10 +28,10 @@ public class Flight : MonoBehaviour
     private float roll;
     private float initLift;
     private float angleX;
-    private float gForceCountDown = 10f;
-    private float sleepTimer = 15f;
-    private bool isSleeping = false;
-    public float tempEngineSpeed;
+    public float gForceCountDown = 10f;
+    public float sleepTimer = 15f;
+    public bool isSleeping = false;
+    private float tempEngineSpeed;
 
     // Update is called once per frame
 
@@ -49,8 +49,9 @@ public class Flight : MonoBehaviour
         {
             PlaneInput();
         }
-    
- 
+
+/*        transform.rotation = Input.gyro.attitude;
+        Debug.Log(transform.rotation);*/
 
         //Debug.Log(gForceCountDown);
     }
@@ -134,10 +135,10 @@ public class Flight : MonoBehaviour
 
     }
 
-    private Boolean GForce()
+    public Boolean GForce()
     {
         if((engineSpeed > 600f && yaw > 0.8f) || (engineSpeed > 600f &&yaw < -0.8f) || 
-            engineSpeed > 600f && pitch > 0.8f)
+            (engineSpeed > 600f && pitch > 0.8f))
         {
             Debug.Log(gForceCountDown);
             gForceCountDown -= Time.deltaTime;
