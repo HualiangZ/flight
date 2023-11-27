@@ -21,6 +21,8 @@ public class Flight : MonoBehaviour
     public float liftPower = 1.5f; //made up number
     public float yawSpeed = 0.1f;
     public float pitchSpeed = 0.1f;
+    public float altitudeZ;
+    public float altitudeY;
 
     public float lift;
     public float yaw;
@@ -37,11 +39,12 @@ public class Flight : MonoBehaviour
 
     void Update()
     {
-        
+        altitudeZ = gameObject.transform.localEulerAngles.z;
+        altitudeY = gameObject.transform.localEulerAngles.y;
+
         zVelocity = m_Rigidbody.velocity.z;
         xVelocity = m_Rigidbody.velocity.x;
         InitLift();
-        SetAngleX();
         LiftUpdate();
         SetSleep();
         GForce();
@@ -77,39 +80,13 @@ public class Flight : MonoBehaviour
         
         //use tempEngineSpeed if pitch angle is greater than 60
         //so user cant keep holding space
-        if (IsStall())
-        {
-            if(tempEngineSpeed > 0f)
-                tempEngineSpeed -= 2f;
-            m_Rigidbody.AddForce(transform.forward * tempEngineSpeed * engineSpeed);
-
-        }
-        else
-        {
-            tempEngineSpeed = engineSpeed;
-            m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
-        }
-
+        m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
         //m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
         m_Rigidbody.AddTorque(transform.up * yaw * 500f);
         m_Rigidbody.AddTorque(-transform.right * pitch * 500f);
         m_Rigidbody.AddTorque(-transform.forward * roll * 500f);
 
         m_Rigidbody.AddForce(transform.up * lift);
-    }
-
-    private void SetAngleX()
-    {
-        angleX = 360 - transform.localEulerAngles.x;
-    }
-
-    private Boolean IsStall()
-    {
-        if (angleX < 60f || angleX >= 200f)
-        {
-            return false;
-        }
-        return true;
     }
 
     //Lift force

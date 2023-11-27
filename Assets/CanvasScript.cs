@@ -12,6 +12,7 @@ public class PointerScript : MonoBehaviour
     public float y;
     public float x;
     public GameObject crosshairPoint;
+    public GameObject altiMeter;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,5 +37,8 @@ public class PointerScript : MonoBehaviour
         {
             warning.text = "";
         }
+
+        altiMeter.transform.rotation = Quaternion.Euler(0f, player.altitudeY, player.altitudeZ);
+
     }
 }
