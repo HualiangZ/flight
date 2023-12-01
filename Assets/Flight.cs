@@ -78,10 +78,7 @@ public class Flight : MonoBehaviour
             pitch = -1f;
 
         
-        //use tempEngineSpeed if pitch angle is greater than 60
-        //so user cant keep holding space
         m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
-        //m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
         m_Rigidbody.AddTorque(transform.up * yaw * 500f);
         m_Rigidbody.AddTorque(-transform.right * pitch * 500f);
         m_Rigidbody.AddTorque(-transform.forward * roll * 500f);

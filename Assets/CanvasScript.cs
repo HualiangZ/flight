@@ -38,7 +38,7 @@ public class PointerScript : MonoBehaviour
             warning.text = "";
         }
 
-        altiMeter.transform.rotation = Quaternion.Euler(0f, player.altitudeY, player.altitudeZ);
+        altiMeter.transform.rotation = Quaternion.Euler(0f, 0f, -player.altitudeZ);
 
     }
 }
