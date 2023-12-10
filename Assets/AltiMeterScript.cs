@@ -21,7 +21,7 @@ public class AltiMeterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        attitudeIndicator.uvRect = new Rect(0, player.localEulerAngles.x / 360, 1, 1);
+        attitudeIndicator.uvRect = new Rect(0, -player.localEulerAngles.x / 360, 1, 1);
         attitudeIndicator.transform.rotation = Quaternion.Euler(0f, 0f, -playerZ.altitudeZ);
         height.text = "" + (int)Math.Round(player.transform.position.y);
     }
