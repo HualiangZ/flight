@@ -133,6 +133,7 @@ public class Flight : MonoBehaviour
     {
         if (isSleeping)
         {
+            engineSpeed -= 0.1f;
             sleepTimer -= Time.deltaTime; 
             if (sleepTimer < 0f)
             {
