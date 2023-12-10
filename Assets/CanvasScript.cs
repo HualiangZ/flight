@@ -12,7 +12,6 @@ public class PointerScript : MonoBehaviour
     public float y;
     public float x;
     public GameObject crosshairPoint;
-    public GameObject altiMeter;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,14 +30,13 @@ public class PointerScript : MonoBehaviour
         }
         else if(player.isSleeping && player.sleepTimer < 15f)
         {
-            warning.text = "Sleeping: " + player.sleepTimer;
+            warning.text = "Sleeping: " + (int)Math.Round(player.sleepTimer);
         }
         else
         {
             warning.text = "";
         }
 
-        altiMeter.transform.rotation = Quaternion.Euler(0f, 0f, -player.altitudeZ);
 
     }
 }

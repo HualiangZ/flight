@@ -22,25 +22,21 @@ public class Flight : MonoBehaviour
     public float yawSpeed = 0.1f;
     public float pitchSpeed = 0.1f;
     public float altitudeZ;
-    public float altitudeY;
 
     public float lift;
     public float yaw;
     public float pitch;
     private float roll;
     private float initLift;
-    private float angleX;
     public float gForceCountDown = 10f;
     public float sleepTimer = 15f;
     public bool isSleeping = false;
-    private float tempEngineSpeed;
 
     // Update is called once per frame
 
     void Update()
     {
         altitudeZ = gameObject.transform.localEulerAngles.z;
-        altitudeY = gameObject.transform.localEulerAngles.y;
 
         zVelocity = m_Rigidbody.velocity.z;
         xVelocity = m_Rigidbody.velocity.x;
