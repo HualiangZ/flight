@@ -22,7 +22,7 @@ public class AltiMeterScript : MonoBehaviour
     void Update()
     {
         attitudeIndicator.uvRect = new Rect(0, -player.localEulerAngles.x / 360, 1, 1);
-        attitudeIndicator.transform.rotation = Quaternion.Euler(0f, 0f, -playerZ.altitudeZ);
+        attitudeIndicator.transform.rotation = Quaternion.Euler(0f, 0f, -playerZ.AltitudeZ);
         height.text = "" + (int)Math.Round(player.transform.position.y);
     }
 }

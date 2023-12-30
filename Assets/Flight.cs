@@ -185,4 +185,32 @@ public class Flight : MonoBehaviour
  
 
     }
+    public float Yaw   
+    {
+        get => yaw;
+    }
+    public float Pitch
+    {
+        get => pitch;
+    }
+    public float Roll
+    {
+        get => roll;
+    }
+    public float GForceCountDown
+    {
+        get => gForceCountDown;
+    }
+    public float SleepTimer
+    {
+        get => sleepTimer;
+    }
+    public Boolean IsSleeping
+    {
+        get => isSleeping;
+    }
+    public float AltitudeZ
+    {
+        get => altitudeZ;
+    }
 }

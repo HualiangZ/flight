@@ -21,16 +21,16 @@ public class PointerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        y = player.pitch;
-        x = player.yaw;
-        crosshairPoint.transform.localPosition = new Vector3(player.yaw * 30, player.pitch * 30, 0);
-        if (player.gForceCountDown < 10f)
+        y = player.Pitch;
+        x = player.Yaw;
+        crosshairPoint.transform.localPosition = new Vector3(player.Yaw * 30, player.Pitch * 30, 0);
+        if (player.GForceCountDown < 10f)
         {
             warning.text = "HIGH G FORCE";
         }
-        else if(player.isSleeping && player.sleepTimer < 15f)
+        else if(player.IsSleeping && player.SleepTimer < 15f)
         {
-            warning.text = "Sleeping: " + (int)Math.Round(player.sleepTimer);
+            warning.text = "Sleeping: " + (int)Math.Round(player.SleepTimer);
         }
         else
         {
