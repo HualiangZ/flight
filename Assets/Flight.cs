@@ -76,7 +76,7 @@ public class Flight : MonoBehaviour
         
         m_Rigidbody.AddForce(transform.forward * engineSpeed * engineSpeed);
         m_Rigidbody.AddTorque(transform.up * yaw * 500f);
-        m_Rigidbody.AddTorque(-transform.right * pitch * 500f);
+        m_Rigidbody.AddTorque(transform.right * pitch * 500f);
         m_Rigidbody.AddTorque(-transform.forward * roll * 500f);
 
         m_Rigidbody.AddForce(transform.up * lift);
@@ -150,7 +150,7 @@ public class Flight : MonoBehaviour
         roll = Input.GetAxis("Horizontal");
 
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.W))
         {
             if (engineSpeed < 500f)
             {
@@ -159,7 +159,7 @@ public class Flight : MonoBehaviour
 
                 
         }
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.S))
         {
             if (engineSpeed > 0f)
             {
@@ -185,6 +185,7 @@ public class Flight : MonoBehaviour
  
 
     }
+
     public float Yaw   
     {
         get => yaw;
